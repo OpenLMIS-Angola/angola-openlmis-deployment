@@ -23,7 +23,7 @@ services:
     depends_on: [consul]
 
   reference-ui:
-    image: openlmisao/ui:${UI_VERSION}
+    image: openlmisao/angola-ui:${ANGOLA_UI_VERSION}
     env_file: settings.env
     depends_on: [consul]
 
@@ -109,7 +109,7 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
-    
+
   diagnostics:
     image: openlmis/diagnostics:${OL_DIAGNOSTICS_VERSION}
     env_file: settings.env

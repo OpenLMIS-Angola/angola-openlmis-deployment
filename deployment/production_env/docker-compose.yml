@@ -122,7 +122,7 @@ services:
   scalyr:
     image: openlmis/scalyr
     container_name: scalyr-agent
-    env_file: .env
+    env_file: settings.env
     volumes:
       - 'service-config:/config'
       - '/var/run/docker.sock:/var/scalyr/docker.sock'

@@ -13,8 +13,8 @@
 URL=`echo ${DATABASE_URL} | sed -E 's/^jdbc\:(.+)/\1/'` # jdbc:<url>
 : "${URL:?URL not parsed}"
 
-echo $URL
-psql --version
+echo ${URL}
+echo `psql --version`
 
 sql=$(cat <<EOF
 UPDATE auth.auth_users SET password = '${ENCODED_USER_PASSWORD}';

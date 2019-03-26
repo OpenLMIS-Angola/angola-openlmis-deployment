@@ -16,9 +16,9 @@ URL=`echo ${DATABASE_URL} | sed -E 's/^jdbc\:(.+)/\1/'` # jdbc:<url>
 sql=$(cat <<EOF
 UPDATE auth.auth_users SET password = '${ENCODED_USER_PASSWORD}';
 UPDATE notification.user_contact_details SET email = NULL;
-UPDATE auth.oauth_client_details SET clientid = '${SERVICE_CLIENT_ID}', clientsecret = '${SERVICE_CLIENT_SECRET}' WHERE clientid = 'production-service-client';
-UPDATE auth.oauth_client_details SET clientsecret = '${CLIENT_SECRET}' WHERE clientid = 'malawi-client';
-UPDATE auth.oauth_client_details SET clientid = '${CLIENT_USERNAME}' WHERE clientid = 'malawi-client';
+UPDATE auth.oauth_client_details SET clientid = '${SERVICE_CLIENT_ID}', clientsecret = '${SERVICE_CLIENT_SECRET}' WHERE clientid = 'angola-client';
+UPDATE auth.oauth_client_details SET clientsecret = '${CLIENT_SECRET}' WHERE clientid = 'angola-ui-client';
+UPDATE auth.oauth_client_details SET clientid = '${CLIENT_USERNAME}' WHERE clientid = 'angola-ui-client';
 EOF
 )
 

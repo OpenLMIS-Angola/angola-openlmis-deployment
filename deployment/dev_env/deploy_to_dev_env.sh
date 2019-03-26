@@ -2,7 +2,8 @@
 
 export DOCKER_TLS_VERIFY="1"
 export DOCKER_HOST="development.ao.openlmis.org:2376"
-export DOCKER_CERT_PATH="${PWD}/../../credentials/dev_env"
+export CREDENTIALS_SUB_DIRECTORY="dev_env"
+export DOCKER_CERT_PATH="${PWD}/../../credentials/${CREDENTIALS_SUB_DIRECTORY}"
 
 /usr/local/bin/docker-compose pull
 

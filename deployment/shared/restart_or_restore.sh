@@ -10,7 +10,7 @@ if [ "$KEEP_OR_WIPE" == "wipe" ]; then
     docker rm $(docker ps -a -q)
     docker rmi $(docker images -q)
 
-    docker system prune -a --volumes
+    docker system prune -a --volumes -f
 
     /usr/local/bin/docker-compose down -v
     /usr/local/bin/docker-compose -f ../shared/restore/docker-compose.yml build --no-cache

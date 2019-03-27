@@ -23,10 +23,6 @@ EOF
 )
 
 echo "Executing clearing sensitive data!!!!"
-echo "Executing clearing sensitive data!!!!"
-echo "Executing clearing sensitive data!!!!"
-echo "Executing clearing sensitive data!!!!"
-echo $sql
 
 PGPASSWORD="${POSTGRES_PASSWORD}" psql ${URL} -U ${POSTGRES_USER} -c "$sql"
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 export DOCKER_TLS_VERIFY="1"
-export DOCKER_HOST="development.ao.openlmis.org:2376"
-export DOCKER_CERT_PATH="${PWD}/../../../credentials/dev_env"
+export DOCKER_HOST="report.test.ao.openlmis.org:2376"
+export DOCKER_CERT_PATH="${PWD}/../../../credentials/test_reporting_env"
 
 export REPORTING_DIR_NAME=reporting
 
@@ -10,13 +10,13 @@ export SUPERSET_ENABLE_SSL=false
 export SUPERSET_SSL_CERT_CHAIN=
 export SUPERSET_SSL_KEY=
 export SUPERSET_SSL_CERT=
-export SUPERSET_DOMAIN_NAME=development.ao.openlmis.org
+export SUPERSET_DOMAIN_NAME=report.test.ao.openlmis.org
 
 export NIFI_ENABLE_SSL=false
 export NIFI_SSL_CERT_CHAIN=
 export NIFI_SSL_KEY=
 export NIFI_SSL_CERT=
-export NIFI_DOMAIN_NAME=development.ao.openlmis.org
+export NIFI_DOMAIN_NAME=report.test.ao.openlmis.org
 
 reportingRepo=$1
 

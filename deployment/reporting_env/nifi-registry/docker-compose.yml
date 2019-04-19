@@ -16,6 +16,7 @@ services:
     env_file: settings.env
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST}
+    depends_on: [log, shared-configuration]
 
   log:
     image: openlmis/rsyslog:${OL_RSYSLOG_VERSION}
@@ -29,11 +30,16 @@ services:
     ports:
       - "${NIFI_REGISTRY_HTTP_PORT}:18080"
       - "${NIFI_REGISTRY_HTTPS_PORT}:18443"
+    volumes:
+      - shared-config:/config
+    command: >
+      bash -c "cp -r /config/nifi-registry/* . &&
+          /opt/nifi-registry/scripts/start.sh"
     logging:
       driver: syslog
       options:
         syslog-address: "udp://127.0.0.1:${SYSLOG_UDP_PORT}"
-    depends_on: [log]
+    depends_on: [log, shared-configuration]
 
 volumes:
   syslog:

@@ -17,6 +17,7 @@ export NIFI_SSL_CERT_CHAIN=
 export NIFI_SSL_KEY=
 export NIFI_SSL_CERT=
 export NIFI_DOMAIN_NAME=report.test.ao.openlmis.org
+export NIFI_JVM_HEAP_MAX=2g
 
 reportingRepo=$1
 

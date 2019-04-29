@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export DOCKER_TLS_VERIFY="1"
-export DOCKER_HOST="108.128.10.51:2376"
+export DOCKER_HOST="report.production.ao.openlmis.org:2376"
 export DOCKER_CERT_PATH="${PWD}/../../../credentials/production_reporting_env"
 
 /usr/local/bin/docker-compose kill

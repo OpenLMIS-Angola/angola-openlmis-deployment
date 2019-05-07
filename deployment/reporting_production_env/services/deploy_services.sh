@@ -27,4 +27,4 @@ cd "$reportingRepo/$REPORTING_DIR_NAME"
 export DOCKER_COMPOSE_BIN=/usr/local/bin/docker-compose
 $DOCKER_COMPOSE_BIN kill
 $DOCKER_COMPOSE_BIN down -v
-$DOCKER_COMPOSE_BIN up --build --force-recreate -d --scale scalyr=0
+$DOCKER_COMPOSE_BIN up --build --force-recreate -d --scale scalyr=0 --scale kafka=0 --scale zookeeper=0

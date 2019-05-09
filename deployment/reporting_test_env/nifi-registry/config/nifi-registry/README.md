@@ -15,3 +15,16 @@ These files can be obtained only from a running instance - files are deleted whe
     docker cp <containerId>:/opt/nifi-registry/nifi-registry-0.2.0/database .
     docker cp <containerId>:/opt/nifi-registry/nifi-registry-0.2.0/flow_storage .
     ```
+
+You can simply execute the whole operation by the following script
+
+    export DOCKER_TLS_VERIFY="1" &&
+    export DOCKER_HOST="<docker_url>:2376" &&                   # TODO: replace it
+    export DOCKER_CERT_PATH="<docker_cert_absolute_path>" &&    # TODO: replace it
+    NIFI_REGISTRY_IMAGE="apache/nifi-registry:0.2.0" &&         # TODO: check if this name is up-to-date
+    BACKUP_DEST="." &&
+
+    NIFI_REGISTRY_ID=$(docker ps -a -q --filter ancestor=$NIFI_REGISTRY_IMAGE) &&
+    docker cp $NIFI_REGISTRY_ID:/opt/nifi-registry/nifi-registry-0.2.0/database $BACKUP_DEST &&
+    docker cp $NIFI_REGISTRY_ID:/opt/nifi-registry/nifi-registry-0.2.0/flow_storage $BACKUP_DEST &&
+    echo "Backup completed"

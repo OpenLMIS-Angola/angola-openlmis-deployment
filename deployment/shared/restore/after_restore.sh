@@ -16,15 +16,12 @@ URL=`echo ${DATABASE_URL} | sed -E 's/^jdbc\:(.+)/\1/'` # jdbc:<url>
 sql=$(cat <<EOF
 UPDATE auth.auth_users SET password = '${ENCODED_USER_PASSWORD}';
 UPDATE notification.user_contact_details SET email = NULL;
-UPDATE auth.oauth_client_details SET clientid = '${SERVICE_CLIENT_ID}', clientsecret = '${SERVICE_CLIENT_SECRET}' WHERE clientid = 'trusted-client';
-UPDATE auth.oauth_client_details SET clientsecret = '${CLIENT_SECRET}' WHERE clientid = 'user-client';
-UPDATE auth.oauth_client_details SET clientid = '${CLIENT_USERNAME}' WHERE clientid = 'user-client';
+UPDATE auth.oauth_client_details SET clientsecret = '${SERVICE_CLIENT_SECRET}' WHERE clientid = 'angola-client';
+UPDATE auth.oauth_client_details SET clientsecret = '${CLIENT_SECRET}', WHERE clientid = 'angola-ui-client';
 EOF
 )
 
-echo "Executing clearing sensitive data!!!!"
-echo "Executing clearing sensitive data!!!!"
-echo "Executing clearing sensitive data!!!!"
+echo $sql
 echo "Executing clearing sensitive data!!!!"
 
 PGPASSWORD="${POSTGRES_PASSWORD}" psql ${URL} -U ${POSTGRES_USER} -c "$sql"

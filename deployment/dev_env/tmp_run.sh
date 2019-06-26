@@ -15,20 +15,11 @@ if [ "$KEEP_OR_WIPE" == "wipe" ]; then
 
     rm -f ../shared/restore/.env-restore
 else
-    WIPE_MSG="Will WIPE data!"
     KEEP_MSG="Will keep data."
 
     /usr/local/bin/docker-compose down
-
-    if [ "$KEEP_OR_WIPE" == "wipe" ]; then
-      echo "$WIPE_MSG"
-      unset spring_profiles_active
-      ./init_with_lets_encrypt.sh
-      /usr/local/bin/docker-compose up -d
-    else
-      echo "$KEEP_MSG";
-      export spring_profiles_active="production"
-      ./init_with_lets_encrypt.sh
-      /usr/local/bin/docker-compose up -d
-    fi
+    echo "$KEEP_MSG";
+    export spring_profiles_active="production"
+    ./init_with_lets_encrypt.sh
+    /usr/local/bin/docker-compose up -d
 fi

@@ -11,7 +11,7 @@ if [ "$KEEP_OR_WIPE" == "wipe" ]; then
     /usr/local/bin/docker-compose down -v
     ../shared/init_with_lets_encrypt.sh
     /usr/local/bin/docker-compose -f ../shared/restore/docker-compose.yml run rds-restore
-    /usr/local/bin/docker-compose up  -d
+    /usr/local/bin/docker-compose up  -d --force-recreate
 
     rm -f ../shared/restore/.env-restore
 else
@@ -21,5 +21,5 @@ else
     echo "$KEEP_MSG";
     export spring_profiles_active="production"
     ../shared/init_with_lets_encrypt.sh
-    /usr/local/bin/docker-compose up -d
+    /usr/local/bin/docker-compose up -d --force-recreate
 fi

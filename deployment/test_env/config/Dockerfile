@@ -1,4 +1,4 @@
-FROM gliderlabs/alpine:3.4
+FROM certbot/certbot:v0.33.1
 
 COPY log/logback.xml /config/log/logback.xml
 COPY scalyr/agent.json /config/scalyr/agent.json

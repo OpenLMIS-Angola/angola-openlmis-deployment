@@ -9,6 +9,8 @@ services:
       - "8400"
       - "8500"
       - "53"
+    networks:
+      - internal_network
 
   nginx-tls:
     image: openlmisao/nginx-tls:${ANGOLA_NGINX_TLS_VERSION}

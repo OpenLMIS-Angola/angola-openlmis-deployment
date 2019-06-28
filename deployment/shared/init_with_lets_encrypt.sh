@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export $(grep -v '^#' settings.env | grep '^[A-Z].*\n' | xargs) rails;
+export $(grep -E '^(LETS_ENCRYPT_|VIRTUAL_HOST).*' settings.env | xargs);
 rsa_key_size=4096
 lets_encrypt="/etc/letsencrypt"
 
@@ -23,6 +23,7 @@ then
       rm -Rf $lets_encrypt/live/$VIRTUAL_HOST && \
       rm -Rf $lets_encrypt/archive/$VIRTUAL_HOST && \
       rm -Rf $lets_encrypt/renewal/$VIRTUAL_HOST.conf" service-configuration
+    /usr/local/bin/docker-compose run --rm --entrypoint "mkdir -p '$lets_encrypt/live/$VIRTUAL_HOST'" service-configuration
 
     case "$LETS_ENCRYPT_EMAIL" in
       "") email_arg="--register-unsafely-without-email" ;;

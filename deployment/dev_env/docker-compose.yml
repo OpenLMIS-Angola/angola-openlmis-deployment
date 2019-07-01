@@ -24,7 +24,7 @@ services:
       - 'nginx-tls-log:/var/log/nginx/log'
       - 'service-config:/config'
       - 'certbot-endpoint:/var/www/certbot'
-      - 'letsencrypt-config:/etc/letsencrypt/live'
+      - 'letsencrypt-config:/etc/letsencrypt'
     networks:
       - nginx_network
     depends_on: [nginx-reverse-proxy]
@@ -190,7 +190,7 @@ services:
     volumes:
       - 'service-config:/config'
       - 'certbot-endpoint:/var/www/certbot'
-      - 'letsencrypt-config:/etc/letsencrypt/live'
+      - 'letsencrypt-config:/etc/letsencrypt'
     networks:
       - internal_network
     restart: unless-stopped

@@ -21,6 +21,9 @@ then
         -subj '/CN=localhost'" service-configuration
     /usr/local/bin/docker-compose up --force-recreate -d nginx-tls
 
+    # Wait for nginx
+    while ! (http_code=$(curl -w %{http_code} -s -o /dev/null http://$VIRTUAL_HOST) && ([ "$http_code" == "200" ] || [ "$http_code" == "301" ])); do sleep 1; done
+
     # Certbot certonly won't create new certificate if a catalog wtih the domain name already exists (even empty).
     /usr/local/bin/docker-compose run --rm --entrypoint "\
       rm -Rf $lets_encrypt/live/$VIRTUAL_HOST && \
@@ -41,4 +44,6 @@ then
         --rsa-key-size $rsa_key_size \
         --agree-tos \
         --force-renewal" service-configuration
+
+    docker exec -it nginx-tls nginx -s reload
 fi;

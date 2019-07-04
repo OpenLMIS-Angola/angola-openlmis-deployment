@@ -46,4 +46,6 @@ then
         --force-renewal" service-configuration
 
     docker exec -it nginx-tls nginx -s reload
+else
+    echo "Using already created certs"
 fi;

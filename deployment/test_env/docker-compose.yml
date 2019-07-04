@@ -4,27 +4,51 @@ services:
   consul:
     command: -server -bootstrap
     image: gliderlabs/consul-server
-    ports:
+    expose:
       - "8300"
       - "8400"
-      - "8500:8500"
+      - "8500"
       - "53"
+    networks:
+      - internal_network
 
-  nginx:
-    image: openlmis/nginx:${OL_NGINX_VERSION}
+  nginx-tls:
+    image: openlmisao/nginx-tls:${ANGOLA_NGINX_TLS_VERSION}
+    container_name: nginx-tls
     ports:
       - "${OL_HTTP_PORT:-80}:80"
+      - "${OL_HTTPS_PORT:-443}:443"
+    env_file: settings.env
+    environment:
+      NGINX_LOG_DIR: '/var/log/nginx/log'
+      RENEWAL_CHECK_PERIOD: "$RENEWAL_CHECK_PERIOD"
+    volumes:
+      - 'nginx-tls-log:/var/log/nginx/log'
+      - 'service-config:/config'
+      - 'certbot-endpoint:/var/www/certbot'
+      - 'letsencrypt-config:/etc/letsencrypt'
+    networks:
+      - nginx_network
+    depends_on: [nginx-reverse-proxy]
+
+  nginx-reverse-proxy:
+    image: openlmis/nginx:${OL_NGINX_VERSION}
     env_file: settings.env
     environment:
       NGINX_LOG_DIR: '/var/log/nginx/log'
     volumes:
-      - 'nginx-log:/var/log/nginx/log'
+      - 'nginx-reverse-proxy-log:/var/log/nginx/log'
       - 'consul-template-log:/var/log/consul-template'
+    networks:
+      - nginx_network
+      - internal_network
     depends_on: [consul]
 
   reference-ui:
     image: openlmisao/angola-ui:${ANGOLA_UI_VERSION}
     env_file: settings.env
+    networks:
+      - internal_network
     depends_on: [consul]
 
   requisition:
@@ -34,6 +58,8 @@ services:
       JAVA_OPTS: '-server -Xmx1024m -Dlogging.config=/config/log/logback.xml'
     volumes:
       - 'service-config:/config'
+    networks:
+      - internal_network
     depends_on: [log]
 
   referencedata:
@@ -43,6 +69,8 @@ services:
       JAVA_OPTS: '-server -Xmx1024m -Dlogging.config=/config/log/logback.xml'
     volumes:
       - 'service-config:/config'
+    networks:
+      - internal_network
     depends_on: [log]
 
   auth:
@@ -52,6 +80,8 @@ services:
       JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
     volumes:
       - 'service-config:/config'
+    networks:
+      - internal_network
     depends_on: [log]
 
   notification:
@@ -61,6 +91,8 @@ services:
       JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
     volumes:
       - 'service-config:/config'
+    networks:
+      - internal_network
     depends_on: [log]
 
   fulfillment:
@@ -70,6 +102,8 @@ services:
       JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
     volumes:
       - 'service-config:/config'
+    networks:
+      - internal_network
     depends_on: [log]
 
   stockmanagement:
@@ -79,6 +113,8 @@ services:
       JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
     volumes:
       - 'service-config:/config'
+    networks:
+      - internal_network
     depends_on: [log]
 
   report:
@@ -88,6 +124,8 @@ services:
       JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
     volumes:
       - 'service-config:/config'
+    networks:
+      - internal_network
     depends_on: [log]
 
   hapifhir:
@@ -99,6 +137,8 @@ services:
       spring_profiles_active: ${spring_profiles_active}
     volumes:
       - 'service-config:/config'
+    networks:
+      - internal_network
     depends_on: [log]
 
   service-desk:
@@ -109,6 +149,8 @@ services:
       spring_profiles_active: ${spring_profiles_active}
     volumes:
       - 'service-config:/config'
+    networks:
+      - internal_network
     depends_on: [log]
 
   diagnostics:
@@ -119,15 +161,17 @@ services:
       spring_profiles_active: ${spring_profiles_active}
     volumes:
       - 'service-config:/config'
+    networks:
+      - internal_network
     depends_on: [log]
 
   log:
     image: openlmis/rsyslog:${OL_RSYSLOG_VERSION}
     volumes:
       - 'syslog:/var/log'
-    depends_on:
-      - service-configuration
-      - consul
+    networks:
+      - internal_network
+    depends_on: [service-configuration, consul]
 
   scalyr:
     image: openlmis/scalyr
@@ -137,32 +181,56 @@ services:
       - 'service-config:/config'
       - '/var/run/docker.sock:/var/scalyr/docker.sock'
       - 'syslog:/var/log'
-      - 'nginx-log:/var/log/nginx/log'
+      - 'nginx-reverse-proxy-log:/var/log/nginx/log'
+    networks:
+      - internal_network
 
   service-configuration:
     build:
       context: ./config
     volumes:
-      - service-config:/config
+      - 'service-config:/config'
+      - 'certbot-endpoint:/var/www/certbot'
+      - 'letsencrypt-config:/etc/letsencrypt'
+    networks:
+      - internal_network
+    environment:
+      RENEWAL_CHECK_PERIOD: "$RENEWAL_CHECK_PERIOD"
+    entrypoint: >
+      sh -c ". /config/certs_obtaining.sh"
 
   ftp:
     image: hauptmedia/proftpd
-    ports:
-      - "${OL_FTP_PORT_21:-21}:21"
-      - "${OL_FTP_PORT_20:-20}:20"
+    expose:
+      - "${OL_FTP_PORT_21:-21}"
+      - "${OL_FTP_PORT_20:-20}"
     env_file: settings.env
+    networks:
+      - internal_network
     depends_on: [consul]
 
   redis:
     image: redis:3.2.12
+    networks:
+      - internal_network
     depends_on: [consul]
 
 volumes:
   syslog:
     external: false
-  nginx-log:
+  nginx-tls-log:
+    external: false
+  nginx-reverse-proxy-log:
     external: false
   consul-template-log:
     external: false
   service-config:
     external: false
+  certbot-endpoint:
+    external: false
+  letsencrypt-config:
+    external: false
+
+networks:
+  nginx_network:
+  internal_network:

@@ -47,5 +47,5 @@ then
 
     docker exec -it nginx-tls nginx -s reload
 else
-    echo "Using already created certs"
+    echo "Using already existing certs"
 fi;

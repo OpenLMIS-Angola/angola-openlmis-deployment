@@ -24,4 +24,4 @@ $DOCKER_COMPOSE_BIN down -v --remove-orphans &&
 /usr/local/bin/docker-compose build &&
 . $init_with_lets_encrypt_sh_path &&
 
-$DOCKER_COMPOSE_BIN up --scale scalyr=0 --scale kafka=0 --scale zookeeper=0 --scale consul=0
+$DOCKER_COMPOSE_BIN up --scale scalyr=0

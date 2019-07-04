@@ -30,7 +30,6 @@ services:
     networks:
       - nginx_network
     depends_on: [nginx-reverse-proxy]
-    restart: unless-stopped
 
   nginx-reverse-proxy:
     image: openlmis/nginx:${OL_NGINX_VERSION}

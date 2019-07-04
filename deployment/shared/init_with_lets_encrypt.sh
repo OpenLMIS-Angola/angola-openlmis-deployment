@@ -22,7 +22,7 @@ then
 
     # Wait for nginx
     while ! (http_code=$(curl -w %{http_code} -s -o /dev/null http://$VIRTUAL_HOST) && ([ "$http_code" == "200" ] || [ "$http_code" == "301" ] || [ "$http_code" == "401" ])); do sleep 1; done
-    echo "Nginx-tls ready for Let's Encrypt challenge"
+    echo "Nginx-tls is ready for Let's Encrypt challenge"
 
     # Certbot certonly won't create new certificate if a catalog wtih the domain name already exists (even empty).
     /usr/local/bin/docker-compose run --rm --entrypoint "\
@@ -45,6 +45,7 @@ then
         --agree-tos \
         --force-renewal" service-configuration
 
+    echo "Applying the newly generated certificates..."
     docker exec -it nginx-tls nginx -s reload
 else
     echo "Using already existing certs"

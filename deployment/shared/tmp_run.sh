@@ -8,7 +8,8 @@ if [ "$KEEP_OR_WIPE" == "wipe" ]; then
     echo "Restoring database from the latest snapshot"
     cp ../../credentials/${CREDENTIALS_SUB_DIRECTORY}/.env-restore ../shared/restore/.env-restore
 
-    /usr/local/bin/docker-compose down -v
+    /usr/local/bin/docker-compose down -v --remove-orphans
+    /usr/local/bin/docker-compose build
     ../shared/init_with_lets_encrypt.sh
     /usr/local/bin/docker-compose -f ../shared/restore/docker-compose.yml run rds-restore
     /usr/local/bin/docker-compose up -d
@@ -20,6 +21,7 @@ else
     /usr/local/bin/docker-compose down
     echo "$KEEP_MSG";
     export spring_profiles_active="production"
+    /usr/local/bin/docker-compose build
     ../shared/init_with_lets_encrypt.sh
     /usr/local/bin/docker-compose up -d
 fi

@@ -8,19 +8,14 @@ export DOCKER_COMPOSE_BIN=/usr/local/bin/docker-compose
 
 export REPORTING_DIR_NAME=reporting
 
-export SUPERSET_ENABLE_SSL=false
-export SUPERSET_BEHIND_LOAD_BALANCER=false
-export SUPERSET_LOAD_BALANCER_REDIRECT_HTTP=false
-export SUPERSET_DOMAIN_NAME=report.test.ao.openlmis.org
+distro_repo=$1
+init_with_lets_encrypt_sh_path="../../deployment/shared/init_with_lets_encrypt.sh"
 
-export NIFI_ENABLE_SSL=false
-export NIFI_BEHIND_LOAD_BALANCER=false
-export NIFI_LOAD_BALANCER_REDIRECT_HTTP=false
-export NIFI_DOMAIN_NAME=report.test.ao.openlmis.org
+cd "$distro_repo/$REPORTING_DIR_NAME" &&
+$DOCKER_COMPOSE_BIN kill &&
+$DOCKER_COMPOSE_BIN down -v --remove-orphans &&
 
-reportingRepo=$1
+/usr/local/bin/docker-compose build &&
+. $init_with_lets_encrypt_sh_path &&
 
-cd "$reportingRepo/$REPORTING_DIR_NAME"
-$DOCKER_COMPOSE_BIN kill
-$DOCKER_COMPOSE_BIN down -v
-$DOCKER_COMPOSE_BIN up --build --force-recreate -d --scale scalyr=0 --scale kafka=0 --scale zookeeper=0
+$DOCKER_COMPOSE_BIN up --scale scalyr=0 --scale kafka=0 --scale zookeeper=0 --scale consul=0

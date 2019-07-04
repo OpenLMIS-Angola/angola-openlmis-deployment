@@ -5,7 +5,6 @@ export $(grep -E '^(LETS_ENCRYPT_|VIRTUAL_HOST).*' settings.env | xargs);
 rsa_key_size=4096
 lets_encrypt="/etc/letsencrypt"
 
-/usr/local/bin/docker-compose build
 # Ask for new certificate only when previous was wiped. Also, if at least one of them is missing ask for a new one.
 if [ $(/usr/local/bin/docker-compose run --rm --entrypoint "/bin/sh -c \"\
         [ ! -f $lets_encrypt/live/$VIRTUAL_HOST/privkey.pem -o\
@@ -22,7 +21,8 @@ then
     /usr/local/bin/docker-compose up --force-recreate -d nginx-tls
 
     # Wait for nginx
-    while ! (http_code=$(curl -w %{http_code} -s -o /dev/null http://$VIRTUAL_HOST) && ([ "$http_code" == "200" ] || [ "$http_code" == "301" ])); do sleep 1; done
+    while ! (http_code=$(curl -w %{http_code} -s -o /dev/null http://$VIRTUAL_HOST) && ([ "$http_code" == "200" ] || [ "$http_code" == "301" ] || [ "$http_code" == "401" ])); do sleep 1; done
+    echo "Nginx-tls ready for Let's Encrypt challenge"
 
     # Certbot certonly won't create new certificate if a catalog wtih the domain name already exists (even empty).
     /usr/local/bin/docker-compose run --rm --entrypoint "\

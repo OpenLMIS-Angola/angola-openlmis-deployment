@@ -3,6 +3,12 @@
 set -e
 
 # ensure some environment variables are set
+touch temp.env
+grep -F "DATABASE_URL" settings.env >> temp.env
+grep -F "POSTGRES_USER" settings.env >> temp.env
+grep -F "POSTGRES_PASSWORD" settings.env >> temp.env
+source temp.env
+
 : "${DATABASE_URL:?DATABASE_URL not set in environment}"
 : "${POSTGRES_USER:?POSTGRES_USER not set in environment}"
 : "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD not set in environment}"
@@ -27,4 +33,6 @@ chmod 600 pgpassfile
 
 # hasta la vista, schema
 export PGPASSFILE='pgpassfile'
-psql "${URL}" -U ${POSTGRES_USER} -t < ./insert_superset_rights.sql
+psql "${URL}" -U ${POSTGRES_USER} -t < ../shared/superset_rights/insert_superset_rights.sql
+
+rm temp.env

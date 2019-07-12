@@ -7,5 +7,3 @@ export DOCKER_CERT_PATH="${PWD}/../../credentials/production_env"
 /usr/local/bin/docker-compose pull
 
 ../shared/restart_or_restore.sh $1
-
-../shared/superset_rights/insert_superset_rights.sh

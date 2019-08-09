@@ -16,6 +16,10 @@ init_with_lets_encrypt_sh_path="../../deployment/shared/init_with_lets_encrypt.s
 # External volumes are not removed even we use docker-compose down with -v option.
 # The external volume need to be created before the docker start
 docker volume create letsencrypt-config
+# The same is with data stored by database. To avoid running the whole ETL process,
+# we need to create a volume for Postgres data and mark it as external,
+# so that Nifi can update already persisted data.
+docker volume create pgdata
 
 cd "$distro_repo/$REPORTING_DIR_NAME" &&
 $DOCKER_COMPOSE_BIN kill &&

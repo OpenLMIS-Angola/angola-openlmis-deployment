@@ -17,7 +17,6 @@ services:
     env_file: settings.env
     environment:
       NGINX_LOG_DIR: '/var/log/nginx/log'
-      RENEWAL_CHECK_PERIOD: "$RENEWAL_CHECK_PERIOD"
     volumes:
       - 'nginx-log:/var/log/nginx/log'
       - 'consul-template-log:/var/log/consul-template'

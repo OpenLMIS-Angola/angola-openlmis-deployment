@@ -7,4 +7,5 @@ export DOCKER_CERT_PATH="${PWD}/../../credentials/${CREDENTIALS_SUB_DIRECTORY}"
 
 /usr/local/bin/docker-compose pull
 
+. after_start.sh &&
 ../shared/restart.sh $1

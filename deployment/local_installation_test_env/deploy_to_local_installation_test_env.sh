@@ -9,15 +9,18 @@ export DOCKER_HOST="local.ao.openlmis.org:2376"
 export CREDENTIALS_SUB_DIRECTORY="local_installation_test_env"
 export DOCKER_CERT_PATH="${PWD}/../../credentials/${CREDENTIALS_SUB_DIRECTORY}"
 
-/usr/local/bin/docker-compose pull
-
 export DATABASE_URL=$(read_var_from_settings_env DATABASE_URL)
 export POSTGRES_USER=$(read_var_from_settings_env POSTGRES_USER)
 export POSTGRES_PASSWORD=$(read_var_from_settings_env POSTGRES_PASSWORD)
-export UI_CLIENT_SECRET=$(read_var_from_settings_env auth.server.clientSecret)
-export AUTH_SERVER_CLIENT_SECRET=$(read_var_from_settings_env AUTH_SERVER_CLIENT_SECRET)
+
+export CLIENT_USERNAME=$(read_var_from_settings_env auth.server.clientId)
+export CLIENT_SECRET=$(read_var_from_settings_env auth.server.clientSecret)
+export SERVICE_CLIENT_ID=$(read_var_from_settings_env AUTH_SERVER_CLIENT_ID)
+export SERVICE_CLIENT_SECRET=$(read_var_from_settings_env AUTH_SERVER_CLIENT_SECRET)
+export OL_SUPERSET_USER=$(read_var_from_settings_env OL_SUPERSET_USER)
 export OL_SUPERSET_PASSWORD=$(read_var_from_settings_env OL_SUPERSET_PASSWORD)
 
-. after_start.sh &&
+/usr/local/bin/docker-compose pull
 
-../shared/restart.sh $1
+. restart_or_restore.sh &&
+. after_start.sh

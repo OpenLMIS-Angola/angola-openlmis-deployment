@@ -21,6 +21,14 @@ DELETE FROM auth.oauth_client_details WHERE clientid = 'superset';
 INSERT INTO auth.oauth_client_details (clientId,authorities,authorizedGrantTypes,clientSecret,scope,resourceIds) VALUES ('angola-client','TRUSTED_CLIENT','client_credentials','${UI_CLIENT_SECRET}','read,write','hapifhir,notification,reports,diagnostics,auth,requisition,referencedata,stockmanagement,angola-reference-ui,fulfillment');
 INSERT INTO auth.oauth_client_details (clientId,authorities,authorizedGrantTypes,clientSecret,scope,resourceIds) VALUES ('angola-ui-client','TRUSTED_CLIENT','password','${AUTH_SERVER_CLIENT_SECRET}','read,write','hapifhir,notification,reports,diagnostics,auth,requisition,referencedata,stockmanagement,angola-reference-ui,fulfillment');
 INSERT INTO auth.oauth_client_details (clientId,authorities,authorizedGrantTypes,clientSecret,scope,resourceIds) VALUES ('superset','TRUSTED_CLIENT','authorization_code','${OL_SUPERSET_PASSWORD}','read,write','hapifhir,notification,reports,diagnostics,auth,requisition,referencedata,stockmanagement,angola-reference-ui,fulfillment');
+
+-- OLMIS-6078: it will not be required in OL_NOTIFICATION_VERSION >= 4.2.0
+INSERT INTO notification.user_contact_details (referencedatauserid, allownotify, email, emailVerified)
+    SELECT '35316636-6264-6331-2d34-3933322d3462', true, 'example@mail.com', true
+WHERE
+    NOT EXISTS (
+        SELECT referencedatauserid FROM notification.user_contact_details WHERE referencedatauserid = '35316636-6264-6331-2d34-3933322d3462'
+    );
 EOF
 )
 

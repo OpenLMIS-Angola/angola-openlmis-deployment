@@ -18,9 +18,9 @@ DELETE FROM auth.oauth_client_details WHERE clientid = 'angola-client';
 DELETE FROM auth.oauth_client_details WHERE clientid = 'angola-ui-client';
 DELETE FROM auth.oauth_client_details WHERE clientid = 'superset';
 
-INSERT INTO auth.oauth_client_details (clientId,authorities,authorizedGrantTypes,clientSecret,"scope","resourceIds") VALUES ('angola-client','TRUSTED_CLIENT','client_credentials','${UI_CLIENT_SECRET}','read,write','hapifhir,notification,reports,diagnostics,auth,requisition,referencedata,stockmanagement,angola-reference-ui,fulfillment');
-INSERT INTO auth.oauth_client_details (clientId,authorities,authorizedGrantTypes,clientSecret,"scope","resourceIds") VALUES ('angola-ui-client','TRUSTED_CLIENT','password','${AUTH_SERVER_CLIENT_SECRET}','read,write','hapifhir,notification,reports,diagnostics,auth,requisition,referencedata,stockmanagement,angola-reference-ui,fulfillment');
-INSERT INTO auth.oauth_client_details (clientId,authorities,authorizedGrantTypes,clientSecret,"scope","resourceIds") VALUES ('superset','TRUSTED_CLIENT','authorization_code','${OL_SUPERSET_PASSWORD}','read,write','hapifhir,notification,reports,diagnostics,auth,requisition,referencedata,stockmanagement,angola-reference-ui,fulfillment');
+INSERT INTO auth.oauth_client_details (clientId,authorities,authorizedGrantTypes,clientSecret,scope,resourceIds) VALUES ('angola-client','TRUSTED_CLIENT','client_credentials','${UI_CLIENT_SECRET}','read,write','hapifhir,notification,reports,diagnostics,auth,requisition,referencedata,stockmanagement,angola-reference-ui,fulfillment');
+INSERT INTO auth.oauth_client_details (clientId,authorities,authorizedGrantTypes,clientSecret,scope,resourceIds) VALUES ('angola-ui-client','TRUSTED_CLIENT','password','${AUTH_SERVER_CLIENT_SECRET}','read,write','hapifhir,notification,reports,diagnostics,auth,requisition,referencedata,stockmanagement,angola-reference-ui,fulfillment');
+INSERT INTO auth.oauth_client_details (clientId,authorities,authorizedGrantTypes,clientSecret,scope,resourceIds) VALUES ('superset','TRUSTED_CLIENT','authorization_code','${OL_SUPERSET_PASSWORD}','read,write','hapifhir,notification,reports,diagnostics,auth,requisition,referencedata,stockmanagement,angola-reference-ui,fulfillment');
 EOF
 )
 

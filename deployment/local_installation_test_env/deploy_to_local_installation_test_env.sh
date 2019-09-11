@@ -14,9 +14,10 @@ export DOCKER_CERT_PATH="${PWD}/../../credentials/${CREDENTIALS_SUB_DIRECTORY}"
 export DATABASE_URL=$(read_var_from_settings_env DATABASE_URL)
 export POSTGRES_USER=$(read_var_from_settings_env POSTGRES_USER)
 export POSTGRES_PASSWORD=$(read_var_from_settings_env POSTGRES_PASSWORD)
-export OL_SUPERSET_PASSWORD=$(read_var_from_settings_env OL_SUPERSET_PASSWORD)
-export AUTH_SERVER_CLIENT_SECRET=$(read_var_from_settings_env AUTH_SERVER_CLIENT_SECRET)
 export UI_CLIENT_SECRET=$(read_var_from_settings_env auth.server.clientSecret)
+export AUTH_SERVER_CLIENT_SECRET=$(read_var_from_settings_env AUTH_SERVER_CLIENT_SECRET)
+export OL_SUPERSET_PASSWORD=$(read_var_from_settings_env OL_SUPERSET_PASSWORD)
+
 . after_start.sh &&
 
 ../shared/restart.sh $1

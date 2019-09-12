@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+read_var_from_env_restore() {
+    echo $(cat .env-restore | grep -v -E '^#' | grep "$1" | cut -d '=' -f2)
+}
+
 extract_host() {
     echo $(echo $1 | sed 's|jdbc:postgresql://||' | sed 's|:5432||' | cut -d '/' -f1)
 }
@@ -11,8 +15,13 @@ extract_db_name() {
 if [ "$KEEP_OR_WIPE" == "wipe" ]; then
     echo "Will WIPE data and copy database from .env-restore!"
 
-    # exporting env properites
-    source <(sed -E -n 's/[^#]+/export &/ p' .env-restore)
+    cp ../../credentials/${CREDENTIALS_SUB_DIRECTORY}/.env-restore ../shared/restore/.env-restore
+
+    # creating env properites
+    export ENCODED_USER_PASSWORD=$(read_var_from_env_restore ENCODED_USER_PASSWORD)
+    SOURCE_DATABASE_URL=$(read_var_from_env_restore SOURCE_DATABASE_URL)
+    SOURCE_DATABASE_USER=$(read_var_from_env_restore SOURCE_DATABASE_USER)
+    SOURCE_DATABASE_PASSWORD=$(read_var_from_env_restore SOURCE_DATABASE_PASSWORD)
 
     : ${SOURCE_DATABASE_URL:?"Need to set SOURCE_DATABASE_URL"}
     : ${SOURCE_DATABASE_USER:?"Need to set SOURCE_DATABASE_USER"}
@@ -39,18 +48,16 @@ if [ "$KEEP_OR_WIPE" == "wipe" ]; then
         DROP SCHEMA IF EXISTS hapifhir CASCADE;
         DROP SCHEMA IF EXISTS notification CASCADE;
         DROP SCHEMA IF EXISTS referencedata CASCADE;
+        DROP SCHEMA IF EXISTS report CASCADE;
         DROP SCHEMA IF EXISTS reports CASCADE;
         DROP SCHEMA IF EXISTS requisition CASCADE;
-        DROP SCHEMA IF EXISTS stockmanagement CASCADE;
         DROP SCHEMA IF EXISTS servicedesk CASCADE;
+        DROP SCHEMA IF EXISTS stockmanagement CASCADE;
         DROP SCHEMA IF EXISTS template CASCADE;
 EOF
     )
 
-    cp ../../credentials/${CREDENTIALS_SUB_DIRECTORY}/.env-restore ../shared/restore/.env-restore
-
     docker system prune -a --volumes -f
-
     /usr/local/bin/docker-compose down -v
 
     echo "Removing existing schemas..." &&
@@ -61,12 +68,13 @@ EOF
 
     echo "Restoring dump..." &&
     PGPASSWORD=$POSTGRES_PASSWORD psql -h $DEST_HOST -U $POSTGRES_USER $DATABASE_NAME < db_dump.sql &&
-    ../shared/restore/after_restore.sh && # TODO: passwords are strange
+    ../shared/restore/after_restore.sh &&
 
     echo "Launching the instance..." &&
     /usr/local/bin/docker-compose up --build --force-recreate -d
 
     rm -f db_dump.sql
+    rm -f ../shared/restore/.env-restore
 else
     ../shared/restart.sh
 fi

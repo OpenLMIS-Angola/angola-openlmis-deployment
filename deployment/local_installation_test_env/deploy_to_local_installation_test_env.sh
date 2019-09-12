@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 read_var_from_settings_env() {
-    echo $(cat settings.env | grep "$1" | cut -d '=' -f2)
+    echo $(cat settings.env | grep -v -E '^#' | grep "$1" | cut -d '=' -f2)
 }
 
 export DOCKER_TLS_VERIFY="1"
@@ -22,5 +22,5 @@ export OL_SUPERSET_PASSWORD=$(read_var_from_settings_env OL_SUPERSET_PASSWORD)
 
 /usr/local/bin/docker-compose pull
 
-. restart_or_restore.sh &&
+../shared/restart_or_restore_by_dump.sh &&
 . after_start.sh

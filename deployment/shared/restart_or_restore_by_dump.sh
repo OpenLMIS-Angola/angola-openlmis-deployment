@@ -13,7 +13,7 @@ extract_db_name() {
 }
 
 if [ "$KEEP_OR_WIPE" == "wipe" ]; then
-    echo "Will WIPE data and copy database from .env-restore!"
+    echo "Will WIPE data and copy data from DB set in .env-restore!"
 
     cp ../../credentials/${CREDENTIALS_SUB_DIRECTORY}/.env-restore ../shared/restore/.env-restore
 

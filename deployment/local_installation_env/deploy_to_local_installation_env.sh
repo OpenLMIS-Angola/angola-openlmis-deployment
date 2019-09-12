@@ -6,7 +6,7 @@ read_var_from_settings_env() {
 
 export DOCKER_TLS_VERIFY="1"
 export DOCKER_HOST="local.ao.openlmis.org:2376"
-export CREDENTIALS_SUB_DIRECTORY="local_installation_test_env"
+export CREDENTIALS_SUB_DIRECTORY="local_installation_env"
 export DOCKER_CERT_PATH="${PWD}/../../credentials/${CREDENTIALS_SUB_DIRECTORY}"
 
 export DATABASE_URL=$(read_var_from_settings_env DATABASE_URL)

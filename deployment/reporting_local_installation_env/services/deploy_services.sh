@@ -28,7 +28,6 @@ $DOCKER_COMPOSE_BIN down -v --remove-orphans &&
 # so that Nifi can update already persisted data.
 if [ "$KEEP_OR_WIPE" == "wipe" ]; then
     echo "Will WIPE data!"
-    docker system prune -a --volumes -f
     docker volume rm pgdata
 fi
 docker volume create pgdata

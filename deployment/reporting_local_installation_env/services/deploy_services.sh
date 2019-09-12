@@ -8,8 +8,9 @@ export DOCKER_COMPOSE_BIN=/usr/local/bin/docker-compose
 
 export REPORTING_DIR_NAME=reporting
 
-# changing the conflicting port of NiFi
+# changing conflicting ports
 export NIFI_WEB_HTTP_PORT=81
+export POSTGRES_PORT=5433
 
 distro_repo=$1
 

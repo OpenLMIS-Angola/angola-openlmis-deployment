@@ -34,6 +34,7 @@ services:
       JAVA_OPTS: '-server -Xmx1024m -Dlogging.config=/config/log/logback.xml'
     volumes:
       - 'service-config:/config'
+      - 'syslog:/var/log'
     depends_on: [log]
 
   referencedata:
@@ -42,6 +43,7 @@ services:
     environment:
       JAVA_OPTS: '-server -Xmx1024m -Dlogging.config=/config/log/logback.xml'
     volumes:
+      - 'syslog:/var/log'
       - 'service-config:/config'
     depends_on: [log]
 
@@ -51,6 +53,7 @@ services:
     environment:
       JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
     volumes:
+      - 'syslog:/var/log'
       - 'service-config:/config'
     depends_on: [log]
 
@@ -60,6 +63,7 @@ services:
     environment:
       JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
     volumes:
+      - 'syslog:/var/log'
       - 'service-config:/config'
     depends_on: [log]
 
@@ -69,6 +73,7 @@ services:
     environment:
       JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
     volumes:
+      - 'syslog:/var/log'
       - 'service-config:/config'
     depends_on: [log]
 
@@ -78,6 +83,7 @@ services:
     environment:
       JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
     volumes:
+      - 'syslog:/var/log'
       - 'service-config:/config'
     depends_on: [log]
 
@@ -88,6 +94,7 @@ services:
       JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
     volumes:
       - 'service-config:/config'
+      - 'syslog:/var/log'
     depends_on: [log]
 
   hapifhir:
@@ -99,6 +106,7 @@ services:
       spring_profiles_active: ${spring_profiles_active}
     volumes:
       - 'service-config:/config'
+      - 'syslog:/var/log'
     depends_on: [log]
 
   diagnostics:
@@ -109,6 +117,7 @@ services:
       spring_profiles_active: ${spring_profiles_active}
     volumes:
       - 'service-config:/config'
+      - 'syslog:/var/log'      
     depends_on: [log]
 
   log:

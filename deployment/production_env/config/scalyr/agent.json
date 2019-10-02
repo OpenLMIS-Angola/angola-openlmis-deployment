@@ -1,7 +1,6 @@
 // Configuration for the Scalyr Agent. For help:
 // 
 // https://www.scalyr.com/help/scalyr-agent-2
-
 {
   import_vars: [ "SCALYR_API_KEY", "SCALYR_HOSTNAME"],
 
@@ -23,7 +22,6 @@
   logs: [
      { path: "/var/log/nginx/log/access.log", attributes: {parser: "accessLog"} },
      { path: "/var/log/nginx/log/error.log" },
-     { path: "/var/log/messages*" },
      { path: "/var/log/angola*" }
   ],
 
@@ -31,7 +29,10 @@
 
   monitors: [
     {
-      module: "scalyr_agent.builtin_monitors.docker_monitor"
+      // https://www.scalyr.com/help/monitors/docker-monitor
+      // We dont want to send the logs from each container console because we aggregate them into specific files.
+      module: "scalyr_agent.builtin_monitors.docker_monitor", 
+      metrics_only: "True"
     }
   ]
 }

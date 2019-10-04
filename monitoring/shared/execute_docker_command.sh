@@ -6,5 +6,4 @@ source ../$HOST/set_docker_variables.sh
 
 echo "Executing docker command '$COMMAND' on the instance: $HOST" 
 
-docker $COMMAND
-
+$COMMAND

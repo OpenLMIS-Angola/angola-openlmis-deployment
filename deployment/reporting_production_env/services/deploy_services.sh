@@ -27,4 +27,4 @@ $DOCKER_COMPOSE_BIN down -v --remove-orphans &&
 
 /usr/local/bin/docker-compose build &&
 
-$DOCKER_COMPOSE_BIN up -d --scale scalyr=0
+$DOCKER_COMPOSE_BIN up -d

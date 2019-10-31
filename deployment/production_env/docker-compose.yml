@@ -15,11 +15,15 @@ services:
     ports:
       - "${OL_HTTP_PORT:-80}:80"
     env_file: settings.env
+    entrypoint: >
+      sh -c "cp -f /config/nginx/openlmis.conf /etc/consul-template/openlmis.conf
+      && sh /home/run.sh"
     environment:
       NGINX_LOG_DIR: '/var/log/nginx/log'
     volumes:
       - 'nginx-log:/var/log/nginx/log'
       - 'consul-template-log:/var/log/consul-template'
+      - 'service-config:/config'
     depends_on: [consul]
 
   reference-ui:
@@ -117,7 +121,7 @@ services:
       spring_profiles_active: ${spring_profiles_active}
     volumes:
       - 'service-config:/config'
-      - 'syslog:/var/log'      
+      - 'syslog:/var/log'
     depends_on: [log]
 
   log:

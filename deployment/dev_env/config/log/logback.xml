@@ -57,7 +57,7 @@
     <appender-ref ref="SERVICE-FILE"/>
   </logger>
 
-  <logger name="org.openlmis.stockmanagement" level="DEBUG" additivity="false">
+  <logger name="org.openlmis.stockmanagement" level="WARN" additivity="false">
     <!-- <appender-ref ref="FILE"/> -->
     <appender-ref ref="SERVICE-FILE"/>
   </logger>

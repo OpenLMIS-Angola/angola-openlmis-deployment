@@ -9,6 +9,8 @@
 : ${CLIENT_SECRET:?"Need to set CLIENT_SECRET"}
 : ${SERVICE_CLIENT_ID:?"Need to set SERVICE_CLIENT_ID"}
 : ${SERVICE_CLIENT_SECRET:?"Need to set SERVICE_CLIENT_SECRET"}
+: ${SUPERSET_CLIENT:?"Need to set SUPERSET_CLIENT"}
+: ${SUPERSET_CLIENT_REDIRECT_URI:?"Need to set SUPERSET_CLIENT_REDIRECT_URI"}
 
 URL=`echo ${DATABASE_URL} | sed -E 's/^jdbc\:(.+)/\1/'` # jdbc:<url>
 : "${URL:?URL not parsed}"
@@ -18,6 +20,7 @@ UPDATE auth.auth_users SET password = '${ENCODED_USER_PASSWORD}';
 UPDATE notification.user_contact_details SET email = SUBSTR(md5(random()::text), 1, 10) || '@example.com';
 UPDATE auth.oauth_client_details SET clientsecret = '${SERVICE_CLIENT_SECRET}' WHERE clientid = 'angola-client';
 UPDATE auth.oauth_client_details SET clientsecret = '${CLIENT_SECRET}' WHERE clientid = 'angola-ui-client';
+UPDATE auth.oauth_client_details SET redirecturi = '${SUPERSET_CLIENT_REDIRECT_URI}' WHERE clientid = '${SUPERSET_CLIENT}';
 EOF
 )
 

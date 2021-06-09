@@ -25,7 +25,7 @@ cd "$distro_repo/$REPORTING_DIR_NAME" &&
 $DOCKER_COMPOSE_BIN kill &&
 $DOCKER_COMPOSE_BIN down -v --remove-orphans &&
 
-/usr/local/bin/docker-compose build &&
+$DOCKER_COMPOSE_BIN build --no-cache
 # . $init_with_lets_encrypt_sh_path &&
 
 $DOCKER_COMPOSE_BIN up -d

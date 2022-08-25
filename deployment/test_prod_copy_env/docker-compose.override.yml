@@ -1,0 +1,53 @@
+version: "3.3"
+
+# This override file introduces a locally deployed PostgreSQL DB
+# It also changes the configuration of services to wait for said DB
+
+services:
+  db:
+    image: openlmis/postgres:${OL_POSTGRES_VERSION}
+    env_file: settings.env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      default:
+        aliases:
+          - olmis-db
+    depends_on: [consul]
+
+  
+  requisition:
+    depends_on: [log, db]
+    command: ["/wait-for-postgres.sh", "/run.sh"]\
+
+  referencedata:
+    depends_on: [log, db]
+    command: ["/wait-for-postgres.sh", "/run.sh"]
+
+  auth:
+    depends_on: [log, db]
+    command: ["/wait-for-postgres.sh", "/run.sh"]
+
+  notification:
+    depends_on: [log, db]
+    command: ["/wait-for-postgres.sh", "/run.sh"]
+
+  fulfillment:
+    depends_on: [log, db]
+    command: ["/wait-for-postgres.sh", "/run.sh"]
+
+  stockmanagement:
+    depends_on: [log, db]
+    command: ["/wait-for-postgres.sh", "/run.sh"]
+
+  report:
+    depends_on: [log, db]
+    command: ["/wait-for-postgres.sh", "/run.sh"]
+
+  hapifhir:
+    depends_on: [log, db]
+    command: ["/wait-for-postgres.sh", "/run.sh"]
+
+  volumes:
+    db_data:
+      external: false

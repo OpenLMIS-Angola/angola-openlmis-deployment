@@ -48,6 +48,6 @@ services:
     depends_on: [log, db]
     command: ["/wait-for-postgres.sh", "/run.sh"]
 
-  volumes:
-    db_data:
-      external: false
+volumes:
+  db_data:
+    external: false

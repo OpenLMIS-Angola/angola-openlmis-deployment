@@ -4,6 +4,7 @@ version: "3.3"
 # It also changes the configuration of services to wait for said DB
 
 services:
+
   db:
     image: openlmis/postgres:${OL_POSTGRES_VERSION}
     env_file: settings.env
@@ -15,10 +16,9 @@ services:
           - olmis-db
     depends_on: [consul]
 
-  
   requisition:
     depends_on: [log, db]
-    command: ["/wait-for-postgres.sh", "/run.sh"]\
+    command: ["/wait-for-postgres.sh", "/run.sh"]
 
   referencedata:
     depends_on: [log, db]

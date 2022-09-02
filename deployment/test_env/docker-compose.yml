@@ -142,7 +142,7 @@ services:
     depends_on: [service-configuration, consul]
 
   scalyr:
-    image: openlmis/scalyr
+    image: openlmis/scalyr:${OL_SCALYR_AGENT_VERSION}
     container_name: scalyr-agent
     env_file: settings.env
     volumes:

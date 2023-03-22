@@ -61,16 +61,6 @@ services:
       - 'service-config:/config'
     depends_on: [log]
 
-  notification:
-    image: openlmis/notification:${OL_NOTIFICATION_VERSION}
-    env_file: settings.env
-    environment:
-      JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/config/log/logback.xml'
-    volumes:
-      - 'syslog:/var/log'
-      - 'service-config:/config'
-    depends_on: [log]
-
   fulfillment:
     image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
     env_file: settings.env

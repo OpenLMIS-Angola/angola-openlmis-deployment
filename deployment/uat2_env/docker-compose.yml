@@ -1,12 +1,4 @@
 version: "3.3"
-
-x-logging:
-  &default-logging
-  driver: json-file
-  options:
-    max-size: "50m"
-    max-file: "7"
-
 services:
 
   consul:
@@ -17,7 +9,6 @@ services:
       - "8400"
       - "8500:8500"
       - "53"
-    logging: *default-logging
 
   nginx:
     image: openlmis/nginx:${OL_NGINX_VERSION}
@@ -34,13 +25,11 @@ services:
       - 'consul-template-log:/var/log/consul-template'
       - 'service-config:/config'
     depends_on: [consul]
-    logging: *default-logging
 
   reference-ui:
     image: openlmisao/angola-production-ui:${ANGOLA_UI_VERSION}
     env_file: settings.env
     depends_on: [consul]
-    logging: *default-logging
 
   requisition:
     image: openlmis/requisition:${OL_REQUISITION_VERSION}
@@ -50,7 +39,6 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
-    logging: *default-logging
 
   referencedata:
     image: openlmis/referencedata:${OL_REFERENCEDATA_VERSION}
@@ -60,7 +48,6 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
-    logging: *default-logging
 
   auth:
     image: openlmis/auth:${OL_AUTH_VERSION}
@@ -70,7 +57,6 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
-    logging: *default-logging
 
   notification:
     image: openlmis/notification:${OL_NOTIFICATION_VERSION}
@@ -80,7 +66,6 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
-    logging: *default-logging
 
   fulfillment:
     image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
@@ -90,7 +75,6 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
-    logging: *default-logging
 
   stockmanagement:
     image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
@@ -100,7 +84,6 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
-    logging: *default-logging
 
   report:
     image: openlmisao/reports:${OL_REPORT_VERSION}
@@ -110,7 +93,6 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
-    logging: *default-logging
 
   hapifhir:
     restart: always
@@ -122,7 +104,6 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
-    logging: *default-logging
 
   diagnostics:
     image: openlmis/diagnostics:${OL_DIAGNOSTICS_VERSION}
@@ -133,7 +114,6 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
-    logging: *default-logging
 
   log:
     image: openlmis/rsyslog:${OL_RSYSLOG_VERSION}
@@ -142,7 +122,6 @@ services:
     depends_on:
       - service-configuration
       - consul
-    logging: *default-logging
 
   scalyr:
     image: openlmis/scalyr
@@ -153,14 +132,12 @@ services:
       - '/var/run/docker.sock:/var/scalyr/docker.sock'
       - 'syslog:/var/log'
       - 'nginx-log:/var/log/nginx/log'
-    logging: *default-logging
 
   service-configuration:
     build:
       context: ./config
     volumes:
       - service-config:/config
-    logging: *default-logging
 
   ftp:
     image: hauptmedia/proftpd

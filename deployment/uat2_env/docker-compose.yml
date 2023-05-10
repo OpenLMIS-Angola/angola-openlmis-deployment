@@ -9,6 +9,11 @@ services:
       - "8400"
       - "8500:8500"
       - "53"
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   nginx:
     image: openlmis/nginx:${OL_NGINX_VERSION}
@@ -25,11 +30,21 @@ services:
       - 'consul-template-log:/var/log/consul-template'
       - 'service-config:/config'
     depends_on: [consul]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   reference-ui:
     image: openlmisao/angola-production-ui:${ANGOLA_UI_VERSION}
     env_file: settings.env
     depends_on: [consul]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   requisition:
     image: openlmis/requisition:${OL_REQUISITION_VERSION}
@@ -39,6 +54,11 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   referencedata:
     image: openlmis/referencedata:${OL_REFERENCEDATA_VERSION}
@@ -48,6 +68,11 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   auth:
     image: openlmis/auth:${OL_AUTH_VERSION}
@@ -57,6 +82,11 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   notification:
     image: openlmis/notification:${OL_NOTIFICATION_VERSION}
@@ -66,6 +96,11 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   fulfillment:
     image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
@@ -75,6 +110,11 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   stockmanagement:
     image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
@@ -84,6 +124,11 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   report:
     image: openlmisao/reports:${OL_REPORT_VERSION}
@@ -93,6 +138,11 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   hapifhir:
     restart: always
@@ -104,6 +154,11 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   diagnostics:
     image: openlmis/diagnostics:${OL_DIAGNOSTICS_VERSION}
@@ -114,6 +169,11 @@ services:
     volumes:
       - 'service-config:/config'
     depends_on: [log]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   log:
     image: openlmis/rsyslog:${OL_RSYSLOG_VERSION}
@@ -122,6 +182,11 @@ services:
     depends_on:
       - service-configuration
       - consul
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   scalyr:
     image: openlmis/scalyr
@@ -132,6 +197,11 @@ services:
       - '/var/run/docker.sock:/var/scalyr/docker.sock'
       - 'syslog:/var/log'
       - 'nginx-log:/var/log/nginx/log'
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   service-configuration:
     build:

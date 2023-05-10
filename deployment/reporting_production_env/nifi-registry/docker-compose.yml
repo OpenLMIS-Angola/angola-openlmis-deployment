@@ -17,6 +17,11 @@ services:
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST}
     depends_on: [log, shared-configuration]
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   log:
     image: openlmis/rsyslog:${OL_RSYSLOG_VERSION}
@@ -24,6 +29,11 @@ services:
       - syslog:/var/log
     ports:
       - "${SYSLOG_UDP_PORT}:514/udp"
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "7"
 
   nifi-registry:
     image: apache/nifi-registry:${OL_NIFI_REGISTRY_VERSION}

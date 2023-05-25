@@ -9,7 +9,7 @@ services:
       - "8400"
       - "8500:8500"
       - "53"
-    logging:
+    logging: &logging
       driver: json-file
       options:
         max-size: "50m"
@@ -31,20 +31,14 @@ services:
       - 'service-config:/config'
     depends_on: [consul]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   reference-ui:
     image: openlmisao/angola-ui:${ANGOLA_UI_VERSION}
     env_file: settings.env
     depends_on: [consul]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   requisition:
     image: openlmis/requisition:${OL_REQUISITION_VERSION}
@@ -56,10 +50,7 @@ services:
       - 'service-config:/config'
     depends_on: [log]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   referencedata:
     image: openlmis/referencedata:${OL_REFERENCEDATA_VERSION}
@@ -71,10 +62,7 @@ services:
       - 'service-config:/config'
     depends_on: [log]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   auth:
     image: openlmis/auth:${OL_AUTH_VERSION}
@@ -86,10 +74,7 @@ services:
       - 'service-config:/config'
     depends_on: [log]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   notification:
     image: openlmis/notification:${OL_NOTIFICATION_VERSION}
@@ -101,10 +86,7 @@ services:
       - 'service-config:/config'
     depends_on: [log]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   fulfillment:
     image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
@@ -116,10 +98,7 @@ services:
       - 'service-config:/config'
     depends_on: [log]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   stockmanagement:
     image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
@@ -131,10 +110,7 @@ services:
       - 'service-config:/config'
     depends_on: [log]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   report:
     image: openlmisao/reports:${OL_REPORT_VERSION}
@@ -146,10 +122,7 @@ services:
       - 'service-config:/config'
     depends_on: [log]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
 
   hapifhir:
@@ -164,10 +137,7 @@ services:
       - 'service-config:/config'
     depends_on: [log]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   service-desk:
     image: openlmisao/service-desk:${OL_SERVICE_DESK_VERSION}
@@ -180,10 +150,7 @@ services:
       - 'service-config:/config'
     depends_on: [log]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   diagnostics:
     image: openlmis/diagnostics:${OL_DIAGNOSTICS_VERSION}
@@ -196,10 +163,7 @@ services:
       - 'syslog:/var/log'
     depends_on: [log]
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   log:
     image: openlmis/rsyslog:${OL_RSYSLOG_VERSION}
@@ -209,10 +173,7 @@ services:
       - service-configuration
       - consul
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   scalyr:
     image: openlmis/scalyr
@@ -224,10 +185,7 @@ services:
       - 'syslog:/var/log'
       - 'nginx-log:/var/log/nginx/log'
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   service-configuration:
     build:

@@ -17,7 +17,7 @@ services:
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST}
     depends_on: [log, shared-configuration]
-    logging:
+    logging: &logging
       driver: json-file
       options:
         max-size: "50m"
@@ -30,10 +30,7 @@ services:
     ports:
       - "${SYSLOG_UDP_PORT}:514/udp"
     logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "7"
+      <<: *logging
 
   nifi-registry:
     image: apache/nifi-registry:${OL_NIFI_REGISTRY_VERSION}

@@ -122,7 +122,7 @@ services:
       - 'syslog:/var/log'
     depends_on: [log]
     logging:
-      <<: *logging"
+      <<: *logging
 
   hapifhir:
     restart: always

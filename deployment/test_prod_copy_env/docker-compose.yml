@@ -34,7 +34,7 @@ services:
       <<: *logging
 
   reference-ui:
-    image: openlmisao/angola-test-prod-copy-ui:${ANGOLA_UI_VERSION}
+    image: openlmisao/angola-production-ui:${ANGOLA_UI_VERSION}
     env_file: settings.env
     depends_on: [consul]
     logging:

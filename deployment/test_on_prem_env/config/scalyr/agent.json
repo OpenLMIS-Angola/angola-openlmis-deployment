@@ -1,5 +1,4 @@
 // Configuration for the Scalyr Agent. For help:
-// 
 // https://www.scalyr.com/help/scalyr-agent-2
 {
   import_vars: [ "SCALYR_API_KEY", "SCALYR_HOSTNAME"],

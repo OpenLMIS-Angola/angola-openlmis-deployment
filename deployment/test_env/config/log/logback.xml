@@ -41,6 +41,9 @@
   <logger name="org.openlmis.report" level="WARN" additivity="false">
     <appender-ref ref="SERVICE-FILE"/>
   </logger>
+  <logger name="org.openlmis.cce" level="WARN" additivity="false">
+    <appender-ref ref="SERVICE-FILE"/>
+  </logger>
 
   <logger name="org.openlmis.ao" level="WARN" additivity="false">
     <appender-ref ref="SERVICE-FILE"/>

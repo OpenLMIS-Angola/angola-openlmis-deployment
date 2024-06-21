@@ -189,7 +189,7 @@ services:
     image: 'ghcr.io/openlmis-angola/open-lmis-sigeca-data-import-microservice:latest'
     container_name: import_service
     volumes:
-      - ./sigeca_config/sync.json:/app/sync.json
+      - ./sigeca_config/sync.json:/app/config.json
     command: ["python", "main.py", "--run-mode", "continuous"]  
 
 volumes:

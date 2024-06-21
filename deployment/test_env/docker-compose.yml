@@ -179,6 +179,21 @@ services:
     image: redis:3.2.12
     depends_on: [consul]
 
+  changelog-configuration:
+    image: 'ghcr.io/openlmis-angola/open-lmis-changelog:latest'
+    env_file:
+      - ./settings.env
+    depends_on:
+      - db
+    command: ["./manage_changelog.sh", "create_changelog", "--envtables"]
+
+  facilities-synchronization:
+    image: 'ghcr.io/openlmis-angola/open-lmis-sigeca-data-import-microservice:latest'
+    container_name: import_service
+    volumes:
+      - ./config/sync.json:/app/sync.json
+    command: ["python", "main.py", "--run-mode", "continuous"]  
+
 volumes:
   syslog:
     external: false

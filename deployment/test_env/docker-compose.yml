@@ -183,8 +183,6 @@ services:
     image: 'ghcr.io/openlmis-angola/open-lmis-changelog:latest'
     env_file:
       - ./settings.env
-    depends_on:
-      - db
     command: ["./manage_changelog.sh", "create_changelog", "--envtables"]
 
   facilities-synchronization:

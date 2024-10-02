@@ -38,6 +38,10 @@ services:
     depends_on: [log, db]
     command: ["/wait-for-postgres.sh", "/run.sh"]
 
+  cce:
+    depends_on: [log, db]
+    command: ["/wait-for-postgres.sh", "/run.sh"]
+
   stockmanagement:
     depends_on: [log, db]
     command: ["/wait-for-postgres.sh", "/run.sh"]

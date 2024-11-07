@@ -204,6 +204,25 @@ services:
     image: redis:3.2.12
     depends_on: [consul]
 
+  changelog-configuration:
+    image: 'ghcr.io/openlmis-angola/open-lmis-changelog:1.0.0'
+    env_file:
+      - ./settings.env
+    command: [ "./manage_changelog.sh", "create_changelog", "--envtables" ]
+
+  facilities-synchronization:
+    image: 'ghcr.io/openlmis-angola/open-lmis-sigeca-data-import-microservice:1.0.0'
+    container_name: import_service
+    env_file: settings.env
+    command: [ "python", "main.py", "--run-mode", "continuous", "--env-config" ]
+
+
+  sigeca-data-warehouse-synchronization:
+    image: 'ghcr.io/openlmis-angola/open-lmis-sigeca-data-export-microservice:1.0.0'
+    container_name: export_service
+    env_file: settings.env
+    command: [ "python", "main.py", "--run-mode", "continuous", "--env-config" ]
+
 volumes:
   syslog:
     external: false

@@ -185,12 +185,11 @@ services:
       - ./settings.env
     command: ["./manage_changelog.sh", "create_changelog", "--envtables"]
 
-  facilities-synchronization:
-    image: 'ghcr.io/openlmis-angola/open-lmis-sigeca-data-import-microservice:latest'
-    container_name: import_service
-    env_file: settings.env
-    command: ["python", "main.py", "--run-mode", "continuous", "--env-config"]  
-
+#  facilities-synchronization:
+#    image: 'ghcr.io/openlmis-angola/open-lmis-sigeca-data-import-microservice:latest'
+#    container_name: import_service
+#    env_file: settings.env
+#    command: ["python", "main.py", "--run-mode", "continuous", "--env-config"]
 
   sigeca-data-warehouse-synchronization:
     image: 'ghcr.io/openlmis-angola/open-lmis-sigeca-data-export-microservice:latest'

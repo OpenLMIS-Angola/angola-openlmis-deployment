@@ -19,6 +19,7 @@ services:
     image: openlmis/nginx:${OL_NGINX_VERSION}
     ports:
       - "${OL_HTTP_PORT:-80}:80"
+      - "443:443"
     env_file: settings.env
     entrypoint: >
       sh -c "cp -f /config/nginx/openlmis.conf /etc/consul-template/openlmis.conf
@@ -34,7 +35,7 @@ services:
       <<: *logging
 
   reference-ui:
-    image: openlmisao/angola-ui:${ANGOLA_UI_VERSION}
+    image: openlmisao/angola-production-ui:${ANGOLA_UI_VERSION}
     env_file: settings.env
     depends_on: [consul]
     logging:
